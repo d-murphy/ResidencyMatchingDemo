@@ -21,8 +21,8 @@ app.post('/oneStep', function(req, res){
     const book = req.body;
 
     currentState.oneTurn();
-    console.log(currentState.stepsToSolution);
-    console.log(book);
+
+    console.log(currentState.stepsToSolution[0].applicants);
     res.json('test');
 });
 
