@@ -1,25 +1,31 @@
 class MatchState {
     constructor(initialState) { 
-        this.initialState = initialState; 
-        this.stepsToSolution = [];
+        this.stepsToSolution = [initialState];
+        this.applicantTurn = 0;
         this.solved = false;
     }; 
     oneTurn = function(){
         if(this.stepsToSolution.length == 0) {
-          const nextState = this.initialState;
-          const applicant = nextState.applicants[0];
-          for (let i=0; i<applicant.rank.lenght; i++){
-            let programNameToTest = applicant.rank[i];
-            console.log(programNameToTest)
-            console.log(this.initialState.programs[programNameToTest].rank)
-            console.log(applicant.name)
-            if(this.initialState.programs[programNameToTest].rank.includes(applicant.name)){
-                nextState.applicants[0].tentativeMatch = programNameToTest;
-                break;
-            }
+          const nextState = this.stepsToSolution[-1];
+          const applicant = nextState.applicants[applicantTurn];
+          const applicantsRankings = applianct.rank;
+          const programs = nextState.programs;
+          for (program in applicantsRankings) {
+
+            //   if (programs[program])
           }
-          this.stepsToSolution.push(nextState);
-        } else {
+        //   for (let i=0; i<applicant.rank.length; i++){
+        //     let programNameToTest = applicant.rank[i];
+        //     console.log(programNameToTest)
+        //     console.log(this.initialState.programs[programNameToTest].rank)
+        //     console.log(applicant.name)
+        //     if(this.initialState.programs[programNameToTest].rank.includes(applicant.name)){
+        //         nextState.applicants[0].tentativeMatch = programNameToTest;
+        //         break;
+        //     }
+        //   }
+        //   this.stepsToSolution.push(nextState);
+        // } else {
 //          const lastStage = this.stepsToSolution[-1] 
 
         }

@@ -1,16 +1,19 @@
 
-const applicants = [
-    {name: "Arthur", rank: ["City"], applicantProposals: [], tentativeMatch: ""},
-    {name: "Sunny", rank: ["City", "Mercy"], applicantProposals: [], tentativeMatch: ""},
-    {name: "Joseph", rank: ["City", "General", "Mercy"], applicantProposals: [], tentativeMatch: ""},
-    {name: "Latha", rank: ["Mercy", "City", "General"], applicantProposals: [], tentativeMatch: ""},
-    {name: "Darrius", rank: ["City", "Mercy", "General"], applicantProposals: [], tentativeMatch: ""}
- ];
+const Applicant = require('./applicant.js');
+const Program = require('./program.js')
+
+const applicants = [];
+
+applicants.push(new Applicant("Arthur", ["City"]));
+applicants.push(new Applicant("Sunny", ["City", "Mercy"]));
+applicants.push(new Applicant("Joseph", ["City", "General", "Mercy"]));
+applicants.push(new Applicant("Latha", ["Mercy", "City", "General"]));
+applicants.push(new Applicant("Darrius", ["City", "Mercy", "General"]));
 
  const programs = {
-    "Mercy" : {numPositions: 2, rank: ["Darrius", "Joseph"]},
-    "City" : {numPositions: 2, rank: ["Darrius", "Arthur", "Sunny", "Latha", "Joseph"]},
-    "General" : {numPositions: 2, rank: ["Darrius", "Arthur", "Joseph", "Latha"]}
+    "Mercy" : new Program("Mercy", 2, ["Darrius", "Joseph"]), 
+    "City" : new Program("City", 2, ["Darrius", "Arthur", "Sunny", "Latha", "Joseph"]),
+    "General" : new Program("General", 2,  ["Darrius", "Arthur", "Joseph", "Latha"]),
  };
 
  const defaultState = {
