@@ -5,10 +5,16 @@ class Applicant {
         this.programRank = [];
         this.tentativeMatch = ""
         this.stable = false;
-        this._updateRank(programRankArr);
+        this.changeRank(programRankArr);
     }; 
-    changeRank = (newRank) => {
-        this._updateRank(newRank)
+
+    changeRank = (programRankArr) => {
+        this.programRank = [];
+        for (let program in programRankArr) {
+            this.programRank.push(
+                {programName: program, proposedTo: false}
+            )
+        }
     }
     proposalTo = (programs) => {
         let programToCheck = '';
@@ -21,7 +27,7 @@ class Applicant {
                 break;
             }
         }
-        let outcome = programs[programToCheck].checkApplicant(this.name)  // add this function in program.js
+        let outcome = programs[programToCheck].checkApplicant(this)  // add this function in program.js
         if (outcome) {
             this.tentativeMatch = programToCheck;
             this.stable = true; 
@@ -30,14 +36,12 @@ class Applicant {
             this.stable = true;
         }
     }
-    _updateRank = (programRankArr) => {
-        this.programRank = [];
-        for (let program in programRankArr) {
-            this.programRank.push(
-                {programName: program, proposedTo: false}
-            )
-        }
+
+    removeAcceptance = () => {
+        this.tentativeMatch = ""
+        this.stable = false;
     }
+    // need a revoke acceptance function;
     
 };
 
