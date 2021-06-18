@@ -9,3 +9,9 @@ test('Test default state - applicant array size', () => {
 test('Test default state - applicant array size', () => {
     expect(currentState.oneTurn()).toBe(false);
 })
+
+test('Test default state - applicant array size', () => {
+    currentState.solve();
+    console.log(currentState.stepsToSolve)
+    expect(currentState.solved).toBe(true);
+})

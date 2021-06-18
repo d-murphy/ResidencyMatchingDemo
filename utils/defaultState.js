@@ -11,8 +11,8 @@ applicants.push(new Applicant("Latha", ["Mercy", "City", "General"]));
 applicants.push(new Applicant("Darrius", ["City", "Mercy", "General"]));
 
  const programs = {
-    "Mercy" : new Program("Mercy", 2, ["Darrius", "Joseph"]), 
-    "City" : new Program("City", 2, ["Darrius", "Arthur", "Sunny", "Latha", "Joseph"]),
+    "Mercy" : new Program("Mercy", 2, ["Arthur", "Joseph"]), 
+    "City" : new Program("City", 1, ["Darrius", "Arthur", "Sunny", "Latha", "Joseph"]),
     "General" : new Program("General", 2,  ["Darrius", "Arthur", "Joseph", "Latha"]),
  };
 

@@ -10,9 +10,9 @@ class Applicant {
 
     changeRank = (programRankArr) => {
         this.programRank = [];
-        for (let program in programRankArr) {
+        for (let i=0; i<programRankArr.length; i++){
             this.programRank.push(
-                {programName: program, proposedTo: false}
+                {programName: programRankArr[i], proposedTo: false}
             )
         }
     }
@@ -23,11 +23,12 @@ class Applicant {
             if(!this.programRank[i].proposedTo){
                 if (i==this.programRank.length-1) lastChance = true;
                 this.programRank[i].proposedTo = true;
-                programToCheck = this.programsRank[i].name;
+                programToCheck = this.programRank[i].programName;
                 break;
             }
         }
         let outcome = programs[programToCheck].checkApplicant(this)  // add this function in program.js
+        console.log("outcome on applicant", outcome)
         if (outcome) {
             this.tentativeMatch = programToCheck;
             this.stable = true; 
@@ -38,6 +39,7 @@ class Applicant {
     }
 
     removeAcceptance = () => {
+        console.log("did this happen in applicant?")
         this.tentativeMatch = ""
         this.stable = false;
     }

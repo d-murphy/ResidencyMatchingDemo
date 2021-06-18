@@ -27,18 +27,20 @@ class Program {
             if(this.applicantRank[i].applicantName == applicantObj.name){
                 this.applicantRank[i].triedProposal = true;
                 if(applicantsAccepted < this.maxApplicants){
+                    console.log("hitting here?")
                     applicantsAccepted += 1;
                     this.applicantRank[i].tentativeMatch = true;
-                    applicantsAccepted = true;
+                    applicantAccepted = true;
+                    console.log(applicantAccepted)
                 }
             } else {
-                if(applicantsAccepted < this.maxApplicants){
+                if (this.applicantRank[i].tentativeMatch){
+                    applicantsAccepted += 1;
+                }
+                if(applicantsAccepted >= this.maxApplicants){
                     this.applicantRank[i].tentativeMatch = false;
                     applicantObj.removeAcceptance()
                 }
-                if (this.applicantRank[i].tentativeMatch){
-                    applicantsAccepted += 1;
-                }    
             } 
         }
         return applicantAccepted;
