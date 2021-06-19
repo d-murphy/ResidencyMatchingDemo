@@ -27,19 +27,23 @@ class Applicant {
                 break;
             }
         }
-        let outcome = programs[programToCheck].checkApplicant(this)  // add this function in program.js
-        console.log("outcome on applicant", outcome)
-        if (outcome) {
+        let results
+        if (programToCheck != ''){
+            results = programs[programToCheck].checkApplicant(this)
+        } else {
+            results = { applicantAccepted: "No Match", bumpedApplicant: "" }
+        }
+        if (results.applicantAccepted) {
             this.tentativeMatch = programToCheck;
             this.stable = true; 
         } else if (lastChance) {
             this.tentativeMatch = "No Match";
             this.stable = true;
         }
+        return results.bumpedApplicant
     }
 
     removeAcceptance = () => {
-        console.log("did this happen in applicant?")
         this.tentativeMatch = ""
         this.stable = false;
     }

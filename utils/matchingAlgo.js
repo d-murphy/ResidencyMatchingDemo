@@ -7,17 +7,21 @@ class MatchState {
         this.solved = false;
     }; 
     oneTurn = () => {
+        let bumpedApplicant = "";
         for(let i=0; i<this.applicants.length; i++){
             if(this.applicants[i].stable){
                 continue
             } else {
-                this.applicants[i].proposalTo(this.programs);
+                bumpedApplicant = this.applicants[i].proposalTo(this.programs);
                 this.stepsToSolve += 1;
                 break; 
             }
         }
         let stableApplicants = 0;
         for(let i=0; i<this.applicants.length; i++){
+            if(this.applicants[i].name == bumpedApplicant){
+                this.applicants[i].removeAcceptance();
+            }
             if (this.applicants[i].stable) stableApplicants += 1;     
         }
         if (stableApplicants == this.applicants.length) {
