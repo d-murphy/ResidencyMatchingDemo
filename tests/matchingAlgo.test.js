@@ -6,9 +6,9 @@ test('Test default state - applicant array size', () => {
     expect(currentState.applicants.length).toBe(5);
 })
 
-test('Test default state - applicant array size', () => {
-    expect(currentState.oneTurn()).toBe(false);
-})
+// test('Test default state - applicant array size', () => {
+//     expect(currentState.oneTurn()).toBe(false);
+// })
 
 test('Test default state - applicant array size', () => {
     currentState.solve();

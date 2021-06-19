@@ -19,11 +19,10 @@ app.get('/start', function(req, res){
 
 app.post('/oneStep', function(req, res){
     const book = req.body;
-
-    console.log("is it solved?", currentState.oneTurn());
-
-    console.log(currentState.stepsToSolution[0].applicants);
-    res.json('test');
+    currentState.oneTurn();
+    console.log("is it solved?", currentState.solved);
+    console.log(currentState.stepsToSolution.length)
+    res.json(currentState.stepsToSolution[currentState.stepsToSolution.length-1]);
 });
 
 

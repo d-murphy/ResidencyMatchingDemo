@@ -49,5 +49,3 @@ class Program {
 
 module.exports = Program;
 
-
-// passing in applicant obj, not applicants.  

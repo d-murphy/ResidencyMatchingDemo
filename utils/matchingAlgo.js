@@ -27,18 +27,20 @@ class MatchState {
         if (stableApplicants == this.applicants.length) {
             this.solved = true;
         }
-        this.stepsToSolution.push(this)
-        if (this.solved){
-            return true;
-        } else {
-            return false;
-        }
+        const newState = {
+            applicants: this.applicants,
+            programs: this.programs
+        };
+       
+
+        this.stepsToSolution.push(newState)
     };
 
     solve = function() {
         let solved = false;
         while(!solved){
-            solved = this.oneTurn()
+            this.oneTurn();
+            solved = this.solved;
         }
     }
 }
