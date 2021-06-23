@@ -5,7 +5,7 @@ class Program {
         this.name = name;
         this.maxApplicants = maxApplicants;
         this.applicantRank = [];
-        this.changeRank(applicantRankArr);
+//        this.changeRank(applicantRankArr);
     };
 
     changeRank = (applicantRankArr) => {

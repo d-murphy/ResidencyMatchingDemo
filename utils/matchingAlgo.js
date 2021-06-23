@@ -1,5 +1,8 @@
+
 class MatchState {
     constructor(initialState) { 
+        this.originalApps = JSON.parse(JSON.stringify(initialState.applicants));
+        this.orginalPrograms = JSON.parse(JSON.stringify(initialState.programs)); 
         this.applicants = initialState.applicants
         this.programs = initialState.programs
         this.stepsToSolution = [initialState];
@@ -31,18 +34,30 @@ class MatchState {
             applicants: this.applicants,
             programs: this.programs
         };
-       
-
         this.stepsToSolution.push(newState)
     };
 
-    solve = function() {
+    solve = () => {
         let solved = false;
         while(!solved){
             this.oneTurn();
             solved = this.solved;
         }
     }
+
+    reset = () => {
+        this.applicants = JSON.parse(JSON.stringify(this.originalApps));
+        this.programs = JSON.parse(JSON.stringify(this.orginalPrograms));
+        this.stepsToSolution = [];
+        const newState = {
+            applicants: this.applicants,
+            programs: this.programs
+        };
+        this.stepsToSolution.push(newState)
+        this.stepsToSolve = 0;
+        this.solved = false;
+    }
 }
 
 module.exports = MatchState;
+

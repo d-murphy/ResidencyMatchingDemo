@@ -2,9 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const defaultState = require('./utils/defaultState.js');
-const MatchState = require('./utils/matchingAlgo.js');
-const currentState = new MatchState(defaultState);
+// const defaultState = require('./utils/defaultState.js');
+// const MatchState = require('./utils/matchingAlgo.js');
+const initState = require('./utils/defaultState2.js')
+const MatchState = require('./utils/matchingAlgo2.js')
+let algoState = new MatchState(initState);
 
 var app = express();
 
@@ -14,16 +16,42 @@ app.use(bodyParser.json())
 
 
 app.get('/start', function(req, res){
-    res.json(defaultState);
+    res.json(algoState.stateStages[0]);
+
+    // res.json(currentState.stepsToSolution[0]);
 });
+
+app.get('/reset', function(req, res){
+    currentState.reset()
+    res.json(currentState.stepsToSolution[0]);
+});
+
 
 app.post('/oneStep', function(req, res){
     const book = req.body;
-    currentState.oneTurn();
-    console.log("is it solved?", currentState.solved);
-    console.log(currentState.stepsToSolution.length)
-    res.json(currentState.stepsToSolution[currentState.stepsToSolution.length-1]);
+    algoState.oneTurn();
+    console.log("is it solved?", algoState.stateStages[algoState.stateStages.length-1].solved);
+    console.log(algoState.stateStages.length)
+    res.json(algoState.stateStages[algoState.stateStages.length-1]);
+
+    // currentState.oneTurn();
+    // console.log("is it solved?", currentState.solved);
+    // console.log(currentState.stepsToSolution.length)
+    // res.json(currentState.stepsToSolution[currentState.stepsToSolution.length-1]);
 });
+
+app.get('/oneStep', function(req, res){
+
+    algoState.oneTurn();
+    console.log("is it solved?", algoState.stateStages[algoState.stateStages.length-1].solved);
+    console.log(algoState.stateStages.length)
+    res.json(algoState.stateStages[algoState.stateStages.length-1]);
+
+
+    // currentState.oneTurn();
+    // res.json(currentState.stepsToSolution[currentState.stepsToSolution.length-1]);
+});
+
 
 
 app.listen(2000);
