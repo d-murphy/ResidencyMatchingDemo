@@ -1,7 +1,7 @@
 const initState = {
     solved: false, 
     applicants: [
-        {name: "Arthur", stable: false, rank: [
+        {name: "Arthur", tentativeMatch: '', stable: false, rank: [
             {name:"Mercy", offered: false, tentMatch: false}
         ]}, 
         {name: "Sunny", tentativeMatch: '', stable: false, rank: [
