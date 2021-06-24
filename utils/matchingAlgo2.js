@@ -45,6 +45,8 @@ class MatchState {
                 newState.applicants[applicantIndex].rank[programToCheckIndex].tentMatch = true;
                 newState.programs[programToCheckName].rank[currentAppIndexInProgram].tentMatch = true;
 
+                let bumpedAppIndex = findAppIndex(state, lowestRankedAdmittedName)
+
                 // need to create function to find lowest ranked index in main applicant state
                 // then adjust pieces
             }
@@ -162,6 +164,16 @@ function findAdmittedCandidates(programToCheck){
     }
     return arrOfAdmittedCandidates;
 }
+
+function findAppIndex(state, name){
+    let applicantIndex = null;
+    for(let i=0; i<state.applicants.length; i++){
+        if(state.applicants[i].name == name){
+            applicantIndex = i;
+        }
+    }
+    return applicantIndex;  
+}
 //const stateSnapShots = [initState];
 
 // let i=0;
@@ -193,7 +205,7 @@ const checkApplicant = () => {
 // module.exports = MatchState;
 module.exports = { 
     MatchState, findFirstUnstableApplicant, findFirstUnofferedProgram, 
-    findAdmittedCandidates, findCurrentApplicantIndex
+    findAdmittedCandidates, findCurrentApplicantIndex, findAppIndex
 }
 
 
