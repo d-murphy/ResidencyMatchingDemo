@@ -14,25 +14,21 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
-
 app.get('/start', function(req, res){
     res.json(algoState.stateStages[0]);
-
-    // res.json(currentState.stepsToSolution[0]);
 });
 
 app.get('/reset', function(req, res){
     currentState.reset()
-    res.json(currentState.stepsToSolution[0]);
+    res.json(algoState.stateStages.slice(-1)[0]);
 });
 
-
-app.post('/oneStep', function(req, res){
+app.post('/changeInitial', function(req, res){
     const book = req.body;
-    algoState.oneTurn();
-    console.log("is it solved?", algoState.stateStages[algoState.stateStages.length-1].solved);
-    console.log(algoState.stateStages.length)
-    res.json(algoState.stateStages[algoState.stateStages.length-1]);
+    // algoState.oneTurn();
+    // console.log("is it solved?", algoState.stateStages[algoState.stateStages.length-1].solved);
+    // console.log(algoState.stateStages.length)
+    // res.json(algoState.stateStages.slice(-1)[0]);
 
     // currentState.oneTurn();
     // console.log("is it solved?", currentState.solved);
@@ -41,15 +37,8 @@ app.post('/oneStep', function(req, res){
 });
 
 app.get('/oneStep', function(req, res){
-
     algoState.oneTurn();
-    console.log("is it solved?", algoState.stateStages[algoState.stateStages.length-1].solved);
-    console.log(algoState.stateStages.length)
     res.json(algoState.stateStages[algoState.stateStages.length-1]);
-
-
-    // currentState.oneTurn();
-    // res.json(currentState.stepsToSolution[currentState.stepsToSolution.length-1]);
 });
 
 

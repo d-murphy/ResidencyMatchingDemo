@@ -7,6 +7,7 @@ const findFirstUnofferedProgram = matchingAlgo2.findFirstUnofferedProgram;
 const findAdmittedCandidates = matchingAlgo2.findAdmittedCandidates;
 const findCurrentApplicantIndex = matchingAlgo2.findCurrentApplicantIndex;
 const findAppIndex = matchingAlgo2.findAppIndex;
+const findProgramInAppRankIndex = matchingAlgo2.findProgramInAppRankIndex;
 
 // findFirstUnstableApplicant
 
@@ -101,4 +102,10 @@ test('Test findApplicantIndex', () =>{
         {name: 'Arthur'}
     ] 
     expect(findAppIndex(state,'Joseph')).toBe(null)
+})
+
+// findProgramInAppRankIndex
+
+test('Test findProgramInAppRankIndex', () => {
+    expect(findProgramInAppRankIndex(defaultState, 1, "City")).toBe(1)
 })
