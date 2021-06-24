@@ -1,4 +1,4 @@
-const data = require('./defaultState2');
+const data = require('./defaultState');
 
 let programs = Object.values(data.programs)
 let applicants = JSON.parse(JSON.stringify(data.applicants))

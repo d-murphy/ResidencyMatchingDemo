@@ -1,63 +1,149 @@
-
 class MatchState {
-    constructor(initialState) { 
-        this.originalApps = JSON.parse(JSON.stringify(initialState.applicants));
-        this.orginalPrograms = JSON.parse(JSON.stringify(initialState.programs)); 
-        this.applicants = initialState.applicants
-        this.programs = initialState.programs
-        this.stepsToSolution = [initialState];
-        this.stepsToSolve = 0;
-        this.solved = false;
-    }; 
-    oneTurn = () => {
-        let bumpedApplicant = "";
-        for(let i=0; i<this.applicants.length; i++){
-            if(this.applicants[i].stable){
-                continue
-            } else {
-                bumpedApplicant = this.applicants[i].proposalTo(this.programs);
-                this.stepsToSolve += 1;
-                break; 
-            }
-        }
-        let stableApplicants = 0;
-        for(let i=0; i<this.applicants.length; i++){
-            if(this.applicants[i].name == bumpedApplicant){
-                this.applicants[i].removeAcceptance();
-            }
-            if (this.applicants[i].stable) stableApplicants += 1;     
-        }
-        if (stableApplicants == this.applicants.length) {
-            this.solved = true;
-        }
-        const newState = {
-            applicants: this.applicants,
-            programs: this.programs
-        };
-        this.stepsToSolution.push(newState)
-    };
-
-    solve = () => {
-        let solved = false;
-        while(!solved){
-            this.oneTurn();
-            solved = this.solved;
-        }
+    constructor(initialState){
+        this.stateStages = [initialState];
     }
 
-    reset = () => {
-        this.applicants = JSON.parse(JSON.stringify(this.originalApps));
-        this.programs = JSON.parse(JSON.stringify(this.orginalPrograms));
-        this.stepsToSolution = [];
-        const newState = {
-            applicants: this.applicants,
-            programs: this.programs
-        };
-        this.stepsToSolution.push(newState)
-        this.stepsToSolve = 0;
-        this.solved = false;
+    reset () {
+        let initialState = this.stateStages[0];
+        this.stateStages = [initialState];
+    }
+
+    solve () {      
+        let lastTurn = this.stateStages.slice(-1)[0]
+        let isItSolved = lastTurn.solved;
+        while(!isItSolved){
+            this.oneTurn();
+            lastTurn = this.stateStages.slice(-1)[0]
+            isItSolved = lastTurn.solved;
+        }
+    }
+    oneTurn () {
+        let newState = JSON.parse(JSON.stringify(this.stateStages[this.stateStages.length-1]));
+
+        const applicantIndex = findFirstUnstableApplicant(newState);
+        if(applicantIndex == -1){
+            newState.solved = true;
+            this.stateStages.push(newState);
+            return ;
+        }
+        const programToCheckIndex = findFirstUnofferedProgram(newState, applicantIndex);
+        if(programToCheckIndex == -1){
+            newState.applicants[applicantIndex].tentativeMatch = "No Match";
+            newState.applicants[applicantIndex].stable = true;
+            this.stateStages.push(newState);
+            return
+        }
+        const applicantName = newState.applicants[applicantIndex].name;
+        const programToCheckName = newState.applicants[applicantIndex].rank[programToCheckIndex].name;
+        const programToCheck = newState.programs[programToCheckName];
+
+        const capacity = parseInt(programToCheck.capacity);
+        const admittedCandidatesIndices = findAdmittedCandidates(programToCheck) 
+        const currentAdmittedCt = admittedCandidatesIndices.length
+        const currentAppIndexInProgram = findCurrentApplicantIndex(programToCheck,applicantName)
+
+        newState.applicants[applicantIndex].rank[programToCheckIndex].offered = true; 
+        if (currentAppIndexInProgram !== null){
+            newState.programs[programToCheckName].rank[currentAppIndexInProgram].offered = true;
+            if (currentAdmittedCt < capacity){
+                newState.applicants[applicantIndex].tentativeMatch = programToCheckName; 
+                newState.applicants[applicantIndex].stable = true;
+                newState.applicants[applicantIndex].rank[programToCheckIndex].tentMatch = true;
+                newState.programs[programToCheckName].rank[currentAppIndexInProgram].tentMatch = true;
+            } else {
+                const lowestRankedAdmittedIndex = admittedCandidatesIndices.slice(-1)[0];
+                const lowestRankedAdmittedName = programToCheck.rank[lowestRankedAdmittedIndex].name;
+                if(lowestRankedAdmittedIndex>currentAppIndexInProgram){
+                    newState.applicants[applicantIndex].tentativeMatch = programToCheckName; 
+                    newState.applicants[applicantIndex].stable = true;
+                    newState.applicants[applicantIndex].rank[programToCheckIndex].tentMatch = true;
+                    newState.programs[programToCheckName].rank[currentAppIndexInProgram].tentMatch = true;
+
+                    let bumpedAppIndex = findAppIndex(newState, lowestRankedAdmittedName)
+                    newState.applicants[bumpedAppIndex].tentativeMatch = ""; 
+                    newState.applicants[bumpedAppIndex].stable = false;
+                    let programInAppRankIndex = findProgramInAppRankIndex(newState, bumpedAppIndex, programToCheckName)
+                    newState.applicants[bumpedAppIndex].rank[programInAppRankIndex].tentMatch = false;
+                    newState.programs[programToCheckName].rank[lowestRankedAdmittedIndex].tentMatch = false;
+                }
+            }
+        }
+        this.stateStages.push(newState);
     }
 }
 
-module.exports = MatchState;
+
+function findFirstUnstableApplicant (state){
+    let applicantIndex = 0;
+    while(applicantIndex<state.applicants.length){
+        if(state.applicants[applicantIndex].stable){
+            applicantIndex +=1;
+        } else {
+            return applicantIndex;
+        }
+    }
+    return -1;
+}
+
+function findFirstUnofferedProgram(state, applicantIndex){
+    let programIndex = 0; 
+    let applicantsRank = state.applicants[applicantIndex].rank
+    while(programIndex<applicantsRank.length){
+        if(applicantsRank[programIndex].offered){
+            programIndex += 1;
+        } else {
+            return programIndex; 
+        }
+    }
+    return -1
+}
+
+function findCurrentApplicantIndex(programToCheck, applicantName){
+    let applicantIndex = null;
+    for(let i=0; i<programToCheck.rank.length; i++){
+        if(programToCheck.rank[i].name == applicantName){
+            applicantIndex = i;
+        }
+    }
+    return applicantIndex;  
+}
+
+function findAdmittedCandidates(programToCheck){
+    let arrOfAdmittedCandidates = [];
+    for(let i=0; i<programToCheck.rank.length; i++){
+        if(programToCheck.rank[i].tentMatch){
+            arrOfAdmittedCandidates.push(i);
+        }
+    }
+    return arrOfAdmittedCandidates;
+}
+
+function findAppIndex(state, name){
+    let applicantIndex = null;
+    for(let i=0; i<state.applicants.length; i++){
+        if(state.applicants[i].name == name){
+            applicantIndex = i;
+        }
+    }
+    return applicantIndex;  
+}
+
+function findProgramInAppRankIndex(state, appIndex, programName){
+    let programIndex = null;
+    for(let i=0; i<state.applicants[appIndex].rank.length; i++){
+        if(state.applicants[appIndex].rank[i].name == programName){
+            programIndex = i;
+        }
+    }
+    return programIndex;  
+}
+
+
+
+module.exports = { 
+    MatchState, findFirstUnstableApplicant, findFirstUnofferedProgram, 
+    findAdmittedCandidates, findCurrentApplicantIndex, findAppIndex, 
+    findProgramInAppRankIndex
+}
+
 
