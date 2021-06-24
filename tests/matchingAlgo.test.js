@@ -74,7 +74,7 @@ test('Test findCurrentAdmittedCt', () => {
 
 test('Test findCurrentApplicantIndex', () => {
     let programToCheck = defaultState.programs['Mercy']
-    let applicantName = "Joseph";
+    let applicantName = "Arthur";
     expect(findCurrentApplicantIndex(programToCheck, applicantName)).toBe(1);
 })
 
