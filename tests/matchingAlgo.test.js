@@ -1,13 +1,13 @@
-const matchingAlgo2 = require('../utils/matchingAlgo.js');
+const matchingAlgo = require('../utils/matchingAlgo.js');
 const defaultState = require('../utils/defaultState.js');
 
 
-const findFirstUnstableApplicant = matchingAlgo2.findFirstUnstableApplicant;
-const findFirstUnofferedProgram = matchingAlgo2.findFirstUnofferedProgram;
-const findAdmittedCandidates = matchingAlgo2.findAdmittedCandidates;
-const findCurrentApplicantIndex = matchingAlgo2.findCurrentApplicantIndex;
-const findAppIndex = matchingAlgo2.findAppIndex;
-const findProgramInAppRankIndex = matchingAlgo2.findProgramInAppRankIndex;
+const findFirstUnstableApplicant = matchingAlgo.findFirstUnstableApplicant;
+const findFirstUnofferedProgram = matchingAlgo.findFirstUnofferedProgram;
+const findAdmittedCandidates = matchingAlgo.findAdmittedCandidates;
+const findCurrentApplicantIndex = matchingAlgo.findCurrentApplicantIndex;
+const findAppIndex = matchingAlgo.findAppIndex;
+const findProgramInAppRankIndex = matchingAlgo.findProgramInAppRankIndex;
 
 // findFirstUnstableApplicant
 
