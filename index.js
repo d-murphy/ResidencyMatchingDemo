@@ -6,7 +6,7 @@ const cors = require('cors');
 // const MatchState = require('./utils/matchingAlgo.js');
 const initState = require('./utils/defaultState2.js')
 const MatchState = require('./utils/matchingAlgo2.js')
-let algoState = new MatchState(initState);
+let algoState = new MatchState.MatchState(initState);
 
 var app = express();
 
@@ -19,7 +19,7 @@ app.get('/start', function(req, res){
 });
 
 app.get('/reset', function(req, res){
-    currentState.reset()
+    algoState.reset()
     res.json(algoState.stateStages.slice(-1)[0]);
 });
 
@@ -40,6 +40,11 @@ app.get('/oneStep', function(req, res){
     algoState.oneTurn();
     res.json(algoState.stateStages[algoState.stateStages.length-1]);
 });
+
+app.get('/solve', function(req, res){
+    algoState.solve();
+    res.json(algoState.stateStages[algoState.stateStages.length-1]);
+})
 
 
 

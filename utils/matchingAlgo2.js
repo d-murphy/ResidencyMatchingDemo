@@ -4,7 +4,8 @@ class MatchState {
     }
 
     reset () {
-        this.stateStages = this.stateStages.slice(0)
+        let initialState = this.stateStages[0];
+        this.stateStages = [initialState];
     }
 
     solve () {      
@@ -19,47 +20,52 @@ class MatchState {
     oneTurn () {
         let newState = JSON.parse(JSON.stringify(this.stateStages[this.stateStages.length-1]));
 
-        const applicantIndex = findFirstUnstableApplicant(state);
+        const applicantIndex = findFirstUnstableApplicant(newState);
         if(applicantIndex == -1){
             newState.solved = true;
-            return newState;
+            this.stateStages.push(newState);
+            return ;
         }
-        const programToCheckIndex = findFirstUnofferedProgram(state, applicantIndex);
+        const programToCheckIndex = findFirstUnofferedProgram(newState, applicantIndex);
         if(programToCheckIndex == -1){
             newState.applicants[applicantIndex].tentativeMatch = "No Match";
             newState.applicants[applicantIndex].stable = true;
+            this.stateStages.push(newState);
+            return
         }
-        const applicantName = state.applicants[applicantIndex].name;
+        const applicantName = newState.applicants[applicantIndex].name;
         const programToCheckName = newState.applicants[applicantIndex].rank[programToCheckIndex].name;
         const programToCheck = newState.programs[programToCheckName];
 
-        const capacity = programToCheck.capacity;
+        const capacity = parseInt(programToCheck.capacity);
         const admittedCandidatesIndices = findAdmittedCandidates(programToCheck) 
         const currentAdmittedCt = admittedCandidatesIndices.length
         const currentAppIndexInProgram = findCurrentApplicantIndex(programToCheck,applicantName)
 
         newState.applicants[applicantIndex].rank[programToCheckIndex].offered = true; 
-        newState.programs[programToCheckName].rank[currentAppIndexInProgram].offered = true;
-        if (currentAdmittedCt < capacity){
-            newState.applicants[applicantIndex].tentativeMatch = programToCheckName; 
-            newState.applicants[applicantIndex].stable = true;
-            newState.applicants[applicantIndex].rank[programToCheckIndex].tentMatch = true;
-            newState.programs[programToCheckName].rank[currentAppIndexInProgram].tentMatch = true;
-        } else {
-            const lowestRankedAdmittedIndex = admittedCandidatesIndices.slice(-1)[0];
-            const lowestRankedAdmittedName = programToCheck.rank[lowestRankedAdmittedIndex].name;
-            if(lowestRankedAdmittedIndex>currentAppIndexInProgram){
+        if (currentAppIndexInProgram !== null){
+            newState.programs[programToCheckName].rank[currentAppIndexInProgram].offered = true;
+            if (currentAdmittedCt < capacity){
                 newState.applicants[applicantIndex].tentativeMatch = programToCheckName; 
                 newState.applicants[applicantIndex].stable = true;
                 newState.applicants[applicantIndex].rank[programToCheckIndex].tentMatch = true;
                 newState.programs[programToCheckName].rank[currentAppIndexInProgram].tentMatch = true;
+            } else {
+                const lowestRankedAdmittedIndex = admittedCandidatesIndices.slice(-1)[0];
+                const lowestRankedAdmittedName = programToCheck.rank[lowestRankedAdmittedIndex].name;
+                if(lowestRankedAdmittedIndex>currentAppIndexInProgram){
+                    newState.applicants[applicantIndex].tentativeMatch = programToCheckName; 
+                    newState.applicants[applicantIndex].stable = true;
+                    newState.applicants[applicantIndex].rank[programToCheckIndex].tentMatch = true;
+                    newState.programs[programToCheckName].rank[currentAppIndexInProgram].tentMatch = true;
 
-                let bumpedAppIndex = findAppIndex(state, lowestRankedAdmittedName)
-                newState.applicants[bumpedAppIndex].tentativeMatch = ""; 
-                newState.applicants[bumpedAppIndex].stable = false;
-                let programInAppRankIndex = findProgramInAppRankIndex(newState, bumpedAppIndex, programToCheckName)
-                newState.applicants[bumpedAppIndex].rank[programInAppRankIndex].tentMatch = false;
-                newState.programs[programToCheckName].rank[lowestRankedAdmittedIndex].tentMatch = false;
+                    let bumpedAppIndex = findAppIndex(newState, lowestRankedAdmittedName)
+                    newState.applicants[bumpedAppIndex].tentativeMatch = ""; 
+                    newState.applicants[bumpedAppIndex].stable = false;
+                    let programInAppRankIndex = findProgramInAppRankIndex(newState, bumpedAppIndex, programToCheckName)
+                    newState.applicants[bumpedAppIndex].rank[programInAppRankIndex].tentMatch = false;
+                    newState.programs[programToCheckName].rank[lowestRankedAdmittedIndex].tentMatch = false;
+                }
             }
         }
         this.stateStages.push(newState);
