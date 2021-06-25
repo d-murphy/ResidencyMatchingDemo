@@ -82,8 +82,8 @@ function App() {
         {programsList}
       </div>
       <div className="control-row">
-        <button onClick={oneTurn}>See next</button>
-        <button onClick={reset}>Reset</button>
+        <button className="button" onClick={oneTurn}>See next</button>
+        <button className="button" onClick={reset}>Reset</button>
       </div>
     </div>
   );
