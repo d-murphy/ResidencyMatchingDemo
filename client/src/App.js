@@ -1,28 +1,30 @@
+// add a random reset
+// adjust css for state and match - consider showing visually?
+// show system status somewhere
+// move buttons up to top
+// add a solve button/ 
+// show capacity
+// add a naration step; 
+
+
 import './App.css';
 import React from 'react';
 
 function App() {
 
+    const [systemStatus, setSystemStatus] = React.useState("Start");
     const [applicants, setApps] = React.useState([]);
     const [programs, setPrgms] = React.useState([]);
 
     React.useEffect(() => {
-      start();
+      reset();
     }, []);
-
-    const start = function(){
-      fetch("http://localhost:2000/reset")
-        .then((res) => res.json())
-        .then((data) => {
-          setApps(data.applicants);
-          setPrgms(Object.values(data.programs));
-        })
-    }
 
     const reset = function(){
       fetch("http://localhost:2000/reset")
       .then((res) => res.json())
       .then((data) => {
+        setSystemStatus(data.solved);
         setApps(data.applicants);
         setPrgms(Object.values(data.programs));
       })
@@ -33,6 +35,7 @@ function App() {
       fetch("http://localhost:2000/oneStep")
       .then((res) => res.json())
       .then((data) => {
+        setSystemStatus(data.solved);
         setApps(data.applicants);
         setPrgms(Object.values(data.programs));
       })
@@ -42,6 +45,10 @@ function App() {
       return (
               <div key={i} className="applicant-box">
                 <div className="app-name">{applicant.name}</div>
+                <div className="app-stable">{`Stable state: ${applicant.stable}`}</div>
+                <div className="app-status-lable">
+                  {systemStatus === false ? "Tentative Match:" : "Match: "}
+                </div>
                 <div className="app-status">{applicant.tentativeMatch == "" ? "TBD" : applicant.tentativeMatch}</div>
                 <div className="app-ranks">{applicant.rank.map(
                   (p,i)=>{

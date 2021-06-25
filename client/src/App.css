@@ -22,41 +22,58 @@ body{
 
 .applicant-box, .program-box{
   flex: 2 1 200px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  background-color: ghostwhite;
+  margin: 5px;
 }
 
 .app-name, .program-name{
   font-size: x-large;
+  padding-bottom: 10px;
+  align-self: center;
+}
+
+.app-status {
   padding-bottom: 10px;
 }
 
 .app-ranks{
   display:flex;
   flex-direction: column;
-  align-items: flex-start;
+}
+
+.Arthurtrue, .Sunnytrue, .Josephtrue, 
+.Lathatrue, .Darriustrue {
+  transition: 1s;
 }
 
 .Arthurtrue {
   background-color: aquamarine;
+  border-radius: 2px;
 }
 
 .Sunnytrue {
   background-color: lightcoral;
+  border-radius: 2px;
 }
 
 .Josephtrue {
   background-color: lightcyan;
+  border-radius: 2px;
 }
 
 .Lathatrue {
   background-color: lightsalmon;
+  border-radius: 2px;
 }
 
 .Darriustrue {
   background-color: lightyellow;
+  border-radius: 2px;
 }
+
 
 .applicant-proposed-true-acc-false {
   text-decoration: line-through;
