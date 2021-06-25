@@ -11,57 +11,80 @@ function App() {
     }, []);
 
     const start = function(){
-      fetch("http://localhost:2000/start")
+      fetch("http://localhost:2000/reset")
         .then((res) => res.json())
         .then((data) => {
           setApps(data.applicants);
-          setPrgms(data.programs);
+          setPrgms(Object.values(data.programs));
         })
-        // .then((data) => console.log(data))
-      console.log('we tried')
     }
 
     const reset = function(){
       fetch("http://localhost:2000/reset")
+      .then((res) => res.json())
+      .then((data) => {
+        setApps(data.applicants);
+        setPrgms(Object.values(data.programs));
+      })
+
     }
 
     const oneTurn = function(){
       fetch("http://localhost:2000/oneStep")
-      // fetch("http://localhost:2000/oneStep", {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify([]),
-      // })
       .then((res) => res.json())
       .then((data) => {
         setApps(data.applicants);
-        setPrgms(data.programs);
+        setPrgms(Object.values(data.programs));
       })
-      .then(()=> console.log(applicants))
     }
 
     let applicantList = applicants.map((applicant, i) => {
       return (
-              <div key={i}>
-                <div className="appName">{applicant.name}</div>
-                <div className="stable">Stable: {"" + applicant.stable}</div>
-                <div className="appRanks">{applicant.programRank.map(
-                  p=>{
-                    return(<div className={"proposedTo"+p.proposedTo}>{p.programName}</div>)
+              <div key={i} className="applicant-box">
+                <div className="app-name">{applicant.name}</div>
+                <div className="app-status">{applicant.tentativeMatch == "" ? "TBD" : applicant.tentativeMatch}</div>
+                <div className="app-ranks">{applicant.rank.map(
+                  (p,i)=>{
+                    return(
+                      <div key={i} className={`${applicant.name}${p.offered} applicant-proposed-${p.offered}-acc-${p.tentMatch}`}>
+                        {`${i+1}. ${p.name}`}
+                      </div>)
                     })}
                 </div>
-                <div className="match">{applicant.tentativeMatch}</div>
               </div>
              )
     })
 
+    let programsList = programs.map((program, i) => {
+      return (
+              <div key={i} className="program-box">
+                <div className="program-name">{program.name}</div>
+                <div className="program-ranks">{program.rank.map(
+                  (p,i)=>{
+                    return(
+                      <div key={i} className={`${p.name}${p.offered} applicant-proposed-${p.offered}-acc-${p.tentMatch}`}>
+                        {`${i+1}. ${p.name}`}
+                      </div>)
+                    })}
+                </div>
+              </div>
+             )
+    })
+
+
+
   return (
     <div className="App">
-      {applicantList}
-      <button onClick={oneTurn}>See next</button>
-      <button onClick={reset}>Reset</button>
+      <div className="applicant-row">
+        {applicantList}
+      </div>
+      <div className="program-row">
+        {programsList}
+      </div>
+      <div className="control-row">
+        <button onClick={oneTurn}>See next</button>
+        <button onClick={reset}>Reset</button>
+      </div>
     </div>
   );
 }
