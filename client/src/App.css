@@ -9,16 +9,31 @@ body{
   padding-top: 40px;
 }
 
-.applicant-row, .program-row, .control-row{
+.applicant-heading, .program-heading, .heading{
+  align-self: center;
+}
+
+.applicant-row, .program-row, .system-message-and-controls, .control-row {
   display: flex;
   flex-direction: row;
 }
 
-.program-row{
-  border-top: 1px solid black;
-  padding-top: 50px;
-  margin-top: 50px;
+.system-message-and-controls {
+  align-items: center;
+  background-color: ghostwhite;
+  padding: 15px;
+  margin-top: 10px;
 }
+
+.system-message{
+  align-self:flex-start;
+}
+
+.applicant-row {
+  padding-bottom: 25px;
+  border-bottom: 1px solid black;
+}
+
 
 .applicant-box, .program-box{
   flex: 2 1 200px;
@@ -28,6 +43,19 @@ body{
   background-color: ghostwhite;
   margin: 5px;
 }
+
+.applicant-stable-true{
+  border: 2px solid green;
+}
+
+.applicant-stable-false{
+  border: 2px solid orange;
+}
+
+.applicant-match-No {
+  border: 2px solid red;
+}
+
 
 .app-name, .program-name{
   font-size: x-large;
@@ -79,20 +107,45 @@ body{
   text-decoration: line-through;
 }
 
+.space-filler {
+  flex: 10 1 5px;
+}
+
+.app-match {
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: small;
+}
+
+.app-status-label{
+  text-align: center;
+}
+
+.program-capcity {
+  align-self: center;
+  padding-bottom: 10px;
+}
+
 
 .button {
-  background-color: green; /* Green */
-  border: none;
-  color: white;
-  padding: 15px 32px;
+  background-color: #f4ebb8; /* Green */
+  border-radius: 25px;
+  border: 2px solid darkgoldenrod;
+  color: darkgoldenrod;
+  padding: 10px 10px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
   transition-duration: 0.4s;
+  width: 140px;
+  margin: 5px;
+  cursor: pointer;
 }
 
 .button:hover {
-  background-color: #4CAF50; /* Green */
+  background-color: darkgoldenrod; /* Green */
   color: white;
 }

@@ -23,6 +23,7 @@ class MatchState {
         const applicantIndex = findFirstUnstableApplicant(newState);
         if(applicantIndex == -1){
             newState.solved = true;
+            newState.systemMessage = "The match is complete."
             this.stateStages.push(newState);
             return ;
         }
@@ -30,6 +31,7 @@ class MatchState {
         if(programToCheckIndex == -1){
             newState.applicants[applicantIndex].tentativeMatch = "No Match";
             newState.applicants[applicantIndex].stable = true;
+            newState.systemMessage = newState.applicants[applicantIndex].name + " has no more ranked programs and does not match."
             this.stateStages.push(newState);
             return
         }
@@ -43,6 +45,7 @@ class MatchState {
         const currentAppIndexInProgram = findCurrentApplicantIndex(programToCheck,applicantName)
 
         newState.applicants[applicantIndex].rank[programToCheckIndex].offered = true; 
+        newState.systemMessage = `${applicantName} proposes to ${programToCheckName} but is not ranked there.`
         if (currentAppIndexInProgram !== null){
             newState.programs[programToCheckName].rank[currentAppIndexInProgram].offered = true;
             if (currentAdmittedCt < capacity){
@@ -50,6 +53,7 @@ class MatchState {
                 newState.applicants[applicantIndex].stable = true;
                 newState.applicants[applicantIndex].rank[programToCheckIndex].tentMatch = true;
                 newState.programs[programToCheckName].rank[currentAppIndexInProgram].tentMatch = true;
+                newState.systemMessage = `${applicantName} proposes to ${programToCheckName} and is tentatively matched.`
             } else {
                 const lowestRankedAdmittedIndex = admittedCandidatesIndices.slice(-1)[0];
                 const lowestRankedAdmittedName = programToCheck.rank[lowestRankedAdmittedIndex].name;
@@ -65,6 +69,8 @@ class MatchState {
                     let programInAppRankIndex = findProgramInAppRankIndex(newState, bumpedAppIndex, programToCheckName)
                     newState.applicants[bumpedAppIndex].rank[programInAppRankIndex].tentMatch = false;
                     newState.programs[programToCheckName].rank[lowestRankedAdmittedIndex].tentMatch = false;
+                    newState.systemMessage = `${applicantName} proposes to ${programToCheckName} and is tentatively matched.
+                                              ${lowestRankedAdmittedName} is bumped and needs to rematch.`
                 }
             }
         }
