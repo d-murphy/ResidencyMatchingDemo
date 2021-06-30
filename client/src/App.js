@@ -1,6 +1,3 @@
-// work on the random start
-// create an env file and change localhost clicks to env vars in prep for heroku url 
-
 import './App.css';
 import React from 'react';
 
@@ -16,7 +13,7 @@ function App() {
     }, []);
 
     const reset = function(){
-      fetch("http://localhost:2000/reset")
+      fetch(`/reset`)
       .then((res) => res.json())
       .then((data) => {
         setSystemStatus(data.solved);
@@ -28,7 +25,7 @@ function App() {
     }
 
     const oneTurn = function(){
-      fetch("http://localhost:2000/oneStep")
+      fetch(`/oneStep`)
       .then((res) => res.json())
       .then((data) => {
         setSystemStatus(data.solved);
@@ -39,7 +36,7 @@ function App() {
     }
 
     const solve = function (){
-      fetch("http://localhost:2000/solve")
+      fetch(`/solve`)
       .then((res) => res.json())
       .then((data) => {
         setSystemStatus(data.solved);
