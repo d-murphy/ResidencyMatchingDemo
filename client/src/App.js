@@ -1,11 +1,5 @@
-// add a random reset
-// adjust css for state and match - consider showing visually?
-// show system status somewhere
-// move buttons up to top
-// add a solve button/ 
-// show capacity
-// add a naration step; 
-
+// work on the random start
+// create an env file and change localhost clicks to env vars in prep for heroku url 
 
 import './App.css';
 import React from 'react';
@@ -111,9 +105,9 @@ function App() {
         </div>
         <div className="space-filler"></div>
         <div className="control-row">
-          <button className="button" onClick={oneTurn}>Play Next Turn</button>
-          <button className="button" onClick={solve}>Complete the Match</button>
-          <button className="button" onClick={reset}>Reset to Beginning</button>
+          <button className={`button disable-${systemStatus}`} onClick={oneTurn}>Play Next Turn</button>
+          <button className={`button disable-${systemStatus}`} onClick={solve}>Complete the Match</button>
+          <button className="button" onClick={reset}>Reset and Randomize</button>
         </div>
       </div>
       <div className="applicant-heading"><h2>Applicants</h2></div>

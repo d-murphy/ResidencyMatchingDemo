@@ -71,6 +71,9 @@ class MatchState {
                     newState.programs[programToCheckName].rank[lowestRankedAdmittedIndex].tentMatch = false;
                     newState.systemMessage = `${applicantName} proposes to ${programToCheckName} and is tentatively matched.
                                               ${lowestRankedAdmittedName} is bumped and needs to rematch.`
+                } else {
+                    newState.systemMessage = `${applicantName} proposes to ${programToCheckName}
+                                              but does not rank higher than the current accepted candidates.`
                 }
             }
         }
