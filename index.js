@@ -35,4 +35,4 @@ app.get('/solve', function(req, res){
     res.json(matchState.stateStages[matchState.stateStages.length-1]);
 })
 
-app.listen(2000);
+app.listen(process.env.PORT || 2000)
