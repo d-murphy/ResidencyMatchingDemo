@@ -12,5 +12,5 @@ In 2012, the Nobel Prize for Economics [recognized](https://en.wikipedia.org/wik
 
 ## Project objectives:
 * Explore the stable match algo
-* Explore jest testing
+* Utilize jest for testing
 * Connect react with express
